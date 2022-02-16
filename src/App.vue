@@ -24,11 +24,15 @@ export default {
   },
   data(){
     return{
-      todos:[
-        {id:'001',title:'吃早饭',done:true},
-        {id:'002',title:'上班',done:false},
-        {id:'003',title:'睡觉',done:true}
-      ]
+      todos:JSON.parse(localStorage.getItem('todos')) || []
+    }
+  },
+  watch:{
+    todos:{
+      deep:true, //深度监视,负责无法监视到对象内部变化
+      handler(value){
+        localStorage.setItem('todos',JSON.stringify(value))
+      }
     }
   },
   methods:{
@@ -36,6 +40,8 @@ export default {
     addtodo(x){
       //使用unshift函数将获取到的todo对象添加到todos内
       this.todos.unshift(x)
+      console.log(x);
+      localStorage.setItem('todos',JSON.stringify(this.todos))
     },
     qufan(id){
       this.todos.forEach((todo)=>{
